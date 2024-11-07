@@ -98,12 +98,12 @@ export default function ProfilePage() {
 					<form>
 						<div className="grid grid-rows-2 gap-6">
 							<div className="row-span-2 sm:col-span-1">
-								<label for="card-number" className="block text-sm font-medium text-gray-700 mb-2">Card Number</label>
-								<input type="text" name="card-number" id="card-number" placeholder="0000 0000 0000 0000" className="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500"/>
+								<label for="email-address" className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+								<input type="text" name="email-address" id="email-address" placeholder="example@google.com" className="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500"/>
 							</div>
 							<div className="col-span-2 sm:col-span-1">
-								<label for="cvv" className="block text-sm font-medium text-gray-700 mb-2">CVV</label>
-								<input type="text" name="cvv" id="cvv" placeholder="000" className="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500"/>
+								<label for="phone-number" className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+								<input type="text" name="phone-number" id="phone-number" placeholder="4445556666" className="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500"/>
 							</div>
 						</div>
 						<div className="mt-8">
