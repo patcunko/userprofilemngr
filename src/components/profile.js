@@ -1,15 +1,41 @@
 import './../App.css';
 
-import { getOwnedVehicles } from './objects/dummy';
+import { getOwnedVehicles, getPurchases } from './objects/dummy';
 
 import React, {useContext} from "react";
 import {useNavigate} from "react-router";
 import LoginContext from "../context/login-context";
 
+import date_icon from './../resources/date.png';
+import item_icon from './../resources/item.png';
+import quantity_icon from './../resources/multiplication.png';
+import points_icon from './../resources/points.png';
+
 const ListVehicle = (props) => {
 	return (
 		<div className="rounded-lg bg-white border p-5 hover:bg-gray-200">
 			<label className="text-xl font-semibold whitespace-nowrap text-black">{props.vehicle.make} {props.vehicle.model} {props.vehicle.model_year}</label>
+		</div>
+	);
+}
+
+const ListPurchase = (props) => {
+	return (
+		<div className="grid grid-cols-4 drop-shadow-md rounded-lg bg-white border grow w-full h-30 p-5 space-x-4 hover:bg-gray-200">
+			<div className="flex justify-self-start space-x-1 rtl:space-x-reverse">
+				<img src={date_icon} className="h-6 self-center" alt="Person Icon" />
+				<span className="text-xl font-semibold whitespace-nowrap dark:text-black text-wrap">{props.purchase.purchase_date.toLocaleString()}</span>
+			</div>
+			<div className="flex col-span-2 justify-self-center space-x-1 rtl:space-x-reverse">
+				<img src={item_icon} className="h-6 self-center" alt="Person Icon" />
+				<span className="text-xl font-semibold whitespace-nowrap dark:text-black">{props.purchase.purchase_item}</span>
+				<img src={quantity_icon} className="h-6 self-center" alt="Person Icon" />
+				<span className="text-xl font-semibold whitespace-nowrap dark:text-black">{props.purchase.item_quantity}</span>
+			</div>
+			<div className="flex justify-self-end space-x-1 rtl:space-x-reverse">
+				<img src={points_icon} className="h-6 self-center" alt="Person Icon" />
+				<span className="text-xl font-semibold whitespace-nowrap dark:text-black">{props.purchase.point_reward}</span>
+			</div>
 		</div>
 	);
 }
@@ -104,11 +130,11 @@ function ContactInfoForm() {
 			<form onSubmit={onSubmit} className='pl-6'>
 				<div className="grid grid-rows-2 gap-6">
 					<div className="row-span-2 sm:col-span-1">
-						<label for="email-address" className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+						<label htmlFor="email-address" className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
 						<input type="text" name="email-address" id="email-address" placeholder="example@google.com" className="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500"/>
 					</div>
 					<div className="col-span-2 sm:col-span-1">
-						<label for="phone-number" className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+						<label htmlFor="phone-number" className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
 						<input type="text" name="phone-number" id="phone-number" placeholder="4445556666" className="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500"/>
 					</div>
 				</div>
@@ -129,6 +155,16 @@ export default function ProfilePage() {
 			return (
 				<ListVehicle
 					vehicle = {vehicle}
+				/>
+			);
+		});
+	}
+
+	function purchaseList() {
+		return getPurchases(user).map((purchase) => {
+			return (
+				<ListPurchase
+					purchase = {purchase}
 				/>
 			);
 		});
@@ -159,6 +195,16 @@ export default function ProfilePage() {
 			<div className='grid grid-cols-2 gap-6 w-5/6'>
 				{PaymentForm()}
 				{ContactInfoForm()}
+			</div>
+			<div className="rounded-2xl shadow-2xl bg-white w-5/6 h-50 space-y-4 pt-6">
+				<div className='border-l-8 border-yellow-400 bg-gray-100 font-bold pl-6 mb-6 w-1/4'>
+					<h2>
+						Purchase History
+					</h2>					
+				</div>
+				<div className="rounded-2xl bg-gray-800 p-4 space-y-2">
+					{purchaseList()}
+				</div>
 			</div>
 		</div>
 	);
