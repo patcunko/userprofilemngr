@@ -16,17 +16,13 @@ function App() {
     
     return (
         <LoginProvider value={[isLoggedIn, setIsLoggedIn, user, setUser]}>
-            <div className='bg-repeat-round' style={{backgroundSize: 800, backgroundImage: `url(${bg_chev})`}}>
-                <div className='h-screen backdrop-blur-xl'>
-                    <Navbar/>
-                    <div className='absolute top-20 w-full grid backdrop-blur-xl'>
-                        <div className="rounded-3xl shadow-2xl w-5/6 bg-gray-100 justify-self-center items-center py-6">
-                            <Routes>
-                                <Route exact path="/" element={<HomePage/>}/>
-                                <Route path="/profile/:id" element={<ProfilePage/>}/>
-                            </Routes>
-                        </div>
-                    </div>
+            <Navbar/>
+            <div className='grid absolute top-20 h-fit w-full'>
+                <div className="rounded-3xl shadow-2xl w-5/6 bg-gray-100 justify-self-center items-center py-6">
+                    <Routes>
+                        <Route exact path="/" element={<HomePage/>}/>
+                        <Route path="/profile/:id" element={<ProfilePage/>}/>
+                    </Routes>
                 </div>
             </div>
         </LoginProvider>
