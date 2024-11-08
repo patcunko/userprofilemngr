@@ -22,19 +22,25 @@ const ListUser = (props) => {
 		navigate(`/profile/${props.user.id}`);
 	}
 	return (
-		<div className="flex grid grid-cols-10 drop-shadow-md rounded-lg bg-white border grow w-5/6 h-30 p-5 space-x-4 hover:bg-gray-200"
+		<div className="lg:grid grid-cols-10 drop-shadow-md rounded-lg bg-white border w-5/6 h-30 p-5 hover:bg-gray-200"
 			onClick={() => { becomeUser() }}>
-			<div className="flex col-span-3 justify-self-start space-x-1 rtl:space-x-reverse">
-				<img src={person_icon} className="h-6 self-center" alt="Person Icon" />
-				<span className="text-xl font-semibold whitespace-nowrap dark:text-black">{props.user.first_name} {props.user.last_name}</span>
+			<div className="col-span-3">
+				<div className='flex'>
+					<img src={person_icon} className="h-6 self-center" alt="Person Icon" />
+					<span className="text-xl font-semibold whitespace-nowrap dark:text-black">{props.user.first_name} {props.user.last_name}</span>
+				</div>
 			</div>
-			<div className="flex col-span-4 space-x-1 rtl:space-x-reverse">
-				<img src={company_icon} className="h-6 self-center" alt="Person Icon" />
-				<span className="text-xl font-semibold whitespace-nowrap dark:text-black">{props.user.company.name}</span>
+			<div className="col-span-4">
+				<div className='flex'>
+					<img src={company_icon} className="h-6 self-center" alt="Company Icon" />
+					<span className="text-xl font-semibold whitespace-nowrap dark:text-black">{props.user.company.name}</span>
+				</div>
 			</div>
-			<div className="flex col-span-3 space-x-1 rtl:space-x-reverse">
-				<img src={role_icon} className="h-6 self-center" alt="Person Icon" />
-				<span className="text-xl font-semibold whitespace-nowrap dark:text-black">{props.user.role}</span>
+			<div className="col-span-3">
+				<div className='flex'>
+					<img src={role_icon} className="h-6 self-center" alt="Role Icon" />
+					<span className="text-xl font-semibold whitespace-nowrap dark:text-black">{props.user.role}</span>
+				</div>
 			</div>
 		</div>
 	)

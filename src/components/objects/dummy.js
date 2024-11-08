@@ -10,7 +10,7 @@ export const company = [new Company(123, 'Only Toyotas', 1000),
 
 export const users = [new User(534543, 'Zivkovic', 'Andrej', 'coolbeans@google.com', 4165555555, company[0], "CEO"), 
 					new User(432423, 'Vvvvvv', 'Felipe', 'vvvvvvvv@ortiz.com', 6479995555, company[0], "Project Manager"),
-					new User(432423, 'Fresh', 'Mad', 'fresh@google.com', 6478885555, company[1], "Wah"), 
+					new User(2312321, 'Fresh', 'Mad', 'fresh@google.com', 6478885555, company[1], "Wah"), 
 					new User(21312, 'Test', 'Johnny', 'testest@google.com', 1234567890, company[2], "Test")];
 
 export const purchases = [new Purchase(1, users[0], new Date(Date.now()), "Item 1", 1, 100), 

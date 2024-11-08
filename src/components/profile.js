@@ -21,20 +21,26 @@ const ListVehicle = (props) => {
 
 const ListPurchase = (props) => {
 	return (
-		<div className="grid grid-cols-4 drop-shadow-md rounded-lg bg-white border grow w-full h-30 p-5 space-x-4 hover:bg-gray-200">
-			<div className="flex justify-self-start space-x-1 rtl:space-x-reverse">
-				<img src={date_icon} className="h-6 self-center" alt="Person Icon" />
-				<span className="text-xl font-semibold whitespace-nowrap dark:text-black text-wrap">{props.purchase.purchase_date.toLocaleString()}</span>
+		<div className="lg:grid grid-cols-4 drop-shadow-md rounded-lg bg-white border p-5 hover:bg-gray-200">
+			<div>
+				<div className='flex'>
+					<img src={date_icon} className="h-6 self-center" alt="Time and Date Icon" />
+					<span className="text-xl self-center font-semibold whitespace-nowrap dark:text-black text-wrap">{props.purchase.purchase_date.toLocaleString()}</span>
+				</div>
 			</div>
-			<div className="flex col-span-2 justify-self-center space-x-1 rtl:space-x-reverse">
-				<img src={item_icon} className="h-6 self-center" alt="Person Icon" />
-				<span className="text-xl font-semibold whitespace-nowrap dark:text-black">{props.purchase.purchase_item}</span>
-				<img src={quantity_icon} className="h-6 self-center" alt="Person Icon" />
-				<span className="text-xl font-semibold whitespace-nowrap dark:text-black">{props.purchase.item_quantity}</span>
+			<div className="flex col-span-2 justify-self-center">
+				<div className='flex'>
+					<img src={item_icon} className="h-6 self-center" alt="Item Icon" />
+					<span className="text-xl self-center font-semibold whitespace-nowrap dark:text-black">{props.purchase.purchase_item}</span>
+					<img src={quantity_icon} className="h-6 self-center" alt="Quantity Icon" />
+					<span className="text-xl self-center font-semibold whitespace-nowrap dark:text-black">{props.purchase.item_quantity}</span>
+				</div>
 			</div>
-			<div className="flex justify-self-end space-x-1 rtl:space-x-reverse">
-				<img src={points_icon} className="h-6 self-center" alt="Person Icon" />
-				<span className="text-xl font-semibold whitespace-nowrap dark:text-black">{props.purchase.point_reward}</span>
+			<div className='justify-self-end self-center'>
+				<div className='flex'>
+					<img src={points_icon} className="h-6 self-center" alt="Rewards Points Icon" />
+					<span className="text-xl font-semibold whitespace-nowrap dark:text-black">{props.purchase.point_reward}</span>
+				</div>
 			</div>
 		</div>
 	);
