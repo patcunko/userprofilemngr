@@ -6,6 +6,8 @@ import React, {useContext} from "react";
 import {useNavigate} from "react-router";
 import LoginContext from "../context/login-context";
 
+import left_chevron from './../resources/chevron-left-small.svg';
+
 import date_icon from './../resources/date.png';
 import item_icon from './../resources/item.png';
 import quantity_icon from './../resources/multiplication.png';
@@ -193,7 +195,7 @@ export default function ProfilePage() {
 					<h2 className='font-bold text-center'>
 						Registered Fleet Vehicles
 					</h2>
-					<div className="rounded-2xl bg-gray-800 p-4 space-y-2">
+					<div className="rounded-2xl bg-gray-800 p-4 space-y-2 bg-center bg-repeat-round" style={{backgroundSize: 100, backgroundImage: `url(${left_chevron})`}}>
 						{vehicleList()}
 					</div>
 				</div>
@@ -208,7 +210,7 @@ export default function ProfilePage() {
 						Purchase History
 					</h2>					
 				</div>
-				<div className="rounded-2xl bg-gray-800 p-4 space-y-2">
+				<div className="rounded-2xl bg-gray-800 p-4 space-y-2 bg-center bg-repeat-round" style={{backgroundSize: 100, backgroundImage: `url(${left_chevron})`}}>
 					{purchaseList()}
 				</div>
 			</div>
