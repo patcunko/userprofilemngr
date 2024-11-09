@@ -23,7 +23,7 @@ const ListUser = (props) => {
 	}
 	return (
 		<div className="lg:grid grid-cols-10 drop-shadow-md rounded-lg bg-white border w-5/6 h-30 p-5 hover:bg-gray-200"
-			onClick={() => { becomeUser() }}>
+			onClick={() => { becomeUser() }} key={props.user.id}>
 			<div className="col-span-3">
 				<div className='flex'>
 					<img src={person_icon} className="h-6 self-center" alt="Person Icon" />
@@ -51,6 +51,7 @@ export default function HomePage() {
 		return users.map((user) => {
 			return (
 				<ListUser
+					key = {user.id}
 					user = {user}
 				/>
 			)

@@ -1,5 +1,4 @@
 import './App.css';
-import bg_chev from "./resources/chevron-up-trail-small.svg";
 
 import React, {useState} from "react";
 import {Route, Routes} from "react-router-dom";

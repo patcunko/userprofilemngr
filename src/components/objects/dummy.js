@@ -1,7 +1,7 @@
 import { Company } from './company';
 import { User } from './user';
 import { Purchase } from './purchase';
-import { PurchaseCredential } from './pur_credentials';
+import { PaymentCredential } from './pur_credentials';
 import { Vehicle } from './vehicle';
 
 export const company = [new Company(123, 'Only Toyotas', 1000), 
@@ -23,10 +23,10 @@ export const purchases = [new Purchase(1, users[0], new Date(Date.now()), "Item 
 						new Purchase(11, users[3], new Date(Date.now()), "Item 3", 3, 110), 
 						new Purchase(12, users[3], new Date(Date.now()), "Item 4", 4, 450)];
 
-export const purchase_credentials = [new PurchaseCredential(1111222233334444, 'Visa', '123 Here St.', users[0]), 
-									new PurchaseCredential(4444333322221111, 'Mastercard', '123 Here St.', users[1]), 
-									new PurchaseCredential('fresh@google.com', 'PayPal', '456 Test Rd.', users[2]),
-									new PurchaseCredential('1230123012301230', 'American Express', '789 Whatever Bv.', users[3])];
+export const purchase_credentials = [new PaymentCredential(1111222233334444, 123, new Date(Date.now()), 'Visa', '123 Here St.', users[0]), 
+									new PaymentCredential(4444333322221111, 321, new Date(Date.now()), 'Mastercard', '123 Here St.', users[1]), 
+									new PaymentCredential(1010101010101010, 456, new Date(Date.now()), 'PayPal', '456 Test Rd.', users[2]),
+									new PaymentCredential(1234567891234567, 654, new Date(Date.now()), 'American Express', '789 Whatever Bv.', users[3])];
 
 export const vehicles = [new Vehicle(1234, company[0], 'Toyota', 'Sequoia', 2024), 
 						new Vehicle(5678, company[0], 'Toyota', 'Highlander', 2023), 
@@ -48,13 +48,14 @@ export function getOwnedVehicles(user) {
 }
 
 export function getPaymentCreds(user) {
-	purchase_credentials.forEach((cred) => {
-		if (cred instanceof PurchaseCredential && user instanceof User) {
-			if (cred.owner.id === user.company.id) {
-				return cred;
+	for (let i in purchase_credentials) {
+		if (purchase_credentials[i] instanceof PaymentCredential && user instanceof User) {
+			if (purchase_credentials[i].owner.id === user.id) {
+				return purchase_credentials[i];
 			}
 		}
-	})
+	}
+	return null;
 }
 
 export function getPurchases(user) {
