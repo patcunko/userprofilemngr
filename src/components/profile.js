@@ -73,11 +73,16 @@ function CompanyDetails(user) {
 						</dd>
 					</div>
 					<div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-6">
-						<dt className="text-sm font-medium text-gray-500">
-							Company Loyalty Points: 
+						<dt className="flex text-sm font-medium text-gray-500 space-x-1">
+							<p>
+								Your Loyalty Points at 
+							</p>
+							<p className='text-blue-500 font-bold'>
+								{user.company.name}: 
+							</p>
 						</dt>
 						<dd className="mt-1 text-sm text-green-500 font-bold sm:mt-0">
-							{user.company.loyalty_points}
+							{user.loyalty_points}
 						</dd>
 					</div>
 				</dl>
@@ -98,7 +103,7 @@ const PaymentForm = (props) => {
 
 	return (
 		<div className="bg-white rounded-lg shadow-lg pl-0 p-6">
-			<h2 className='border-l-8 border-pink-400 bg-gray-100 font-bold pl-6 mb-6 w-1/2'>
+			<h2 className='border-l-8 border-pink-400 bg-gray-100 font-bold pl-6 md:px-6 mb-6 w-fit'>
 				Your Payment Information
 			</h2>
 			<form onSubmit={onSubmit} className='pl-6'>
@@ -138,7 +143,7 @@ function ContactInfoForm() {
 
 	return (
 		<div className="bg-white rounded-lg shadow-lg pl-0 p-6">
-			<h2 className='border-l-8 border-purple-400 bg-gray-100 font-bold pl-6 mb-6 w-1/2'>
+			<h2 className='border-l-8 border-purple-400 bg-gray-100 font-bold pl-6 md:px-6 mb-6 w-fit'>
 					Your Contact Information
 			</h2>
 			<form onSubmit={onSubmit} className='pl-6'>
@@ -203,7 +208,7 @@ export default function ProfilePage() {
 			</div>
 
 			<div className="rounded-2xl shadow-2xl bg-white w-5/6 h-50 space-y-4 pt-6">
-				<div className='border-l-8 border-red-400 bg-gray-100 font-bold pl-6 mb-6 w-1/4'>
+				<div className='border-l-8 border-red-400 bg-gray-100 font-bold px-6 mb-6 w-fit'>
 					<h2>
 						Company Information
 					</h2>
@@ -223,7 +228,7 @@ export default function ProfilePage() {
 				{ContactInfoForm()}
 			</div>
 			<div className="rounded-2xl shadow-2xl bg-white w-5/6 h-50 space-y-4 pt-6">
-				<div className='border-l-8 border-yellow-400 bg-gray-100 font-bold pl-6 mb-6 w-1/4'>
+				<div className='border-l-8 border-yellow-400 bg-gray-100 font-bold px-6 mb-6 w-fit'>
 					<h2>
 						Purchase History
 					</h2>					

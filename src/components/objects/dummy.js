@@ -4,14 +4,14 @@ import { Purchase } from './purchase';
 import { PaymentCredential } from './pur_credentials';
 import { Vehicle } from './vehicle';
 
-export const company = [new Company(123, 'Only Toyotas', 1000), 
-						new Company(456, 'Presidential Convoy Ltd.', 1245), 
-						new Company(789, "Beeg Fleet", 9999)];
+export const company = [new Company(123, 'Only Toyotas'), 
+						new Company(456, 'Presidential Convoy Ltd.'), 
+						new Company(789, "Beeg Fleet")];
 
-export const users = [new User(534543, 'Zivkovic', 'Andrej', 'coolbeans@google.com', 4165555555, company[0], "CEO"), 
-					new User(432423, 'Vvvvvv', 'Felipe', 'vvvvvvvv@ortiz.com', 6479995555, company[0], "Project Manager"),
-					new User(2312321, 'Fresh', 'Mad', 'fresh@google.com', 6478885555, company[1], "Wah"), 
-					new User(21312, 'Test', 'Johnny', 'testest@google.com', 1234567890, company[2], "Test")];
+export const users = [new User(534543, 'Zivkovic', 'Andrej', 'coolbeans@google.com', 4165555555, company[0], "CEO", 2555), 
+					new User(432423, 'Vvvvvv', 'Felipe', 'vvvvvvvv@ortiz.com', 6479995555, company[0], "Project Manager", 1000),
+					new User(2312321, 'Fresh', 'Mad', 'fresh@google.com', 6478885555, company[1], "Wah", 500), 
+					new User(21312, 'Test', 'Johnny', 'testest@google.com', 1234567890, company[2], "Test", 9999)];
 
 export const purchases = [new Purchase(1, users[0], new Date(Date.now()), "Item 1", 1, 100), 
 						new Purchase(2, users[0], new Date(Date.now()), "Item 2", 2, 150), 
