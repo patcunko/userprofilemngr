@@ -13,7 +13,7 @@ import LoginContext from "../context/login-context";
 
 const ListUser = (props) => {
 	// eslint-disable-next-line
-	const{isLoggedIn, setIsLoggedIn, setUser} = useContext(LoginContext);
+	const[isLoggedIn, setIsLoggedIn, _, setUser] = useContext(LoginContext);
 	const navigate = useNavigate();
 	const { user } = props;
 
@@ -21,7 +21,7 @@ const ListUser = (props) => {
 		setIsLoggedIn(true);
 		setUser(user);
 		console.log(`Became user ${user.first_name}.`);
-		navigate(`/profile/${props.user.id}`);
+		navigate(`/profile/${user.id}`);
 	}
 
 	return (

@@ -34,25 +34,27 @@ app.get('/api/users', async (req, res) => {
 app.get('/api/users/:id', async (req, res) => {
     try {
         const userId = req.params.id;
-        const userResult = await client.query('SELECT * FROM users WHERE id = $1', [userId]);
+        const userResult = await client.query('SELECT users.* , name as company_name FROM users INNER JOIN companies ON users.company_id = companies.id WHERE users.id = $1', [userId]);
         const purchasesResult = await client.query('SELECT * FROM purchases WHERE user_id = $1', [userId]);
         const vehiclesResult = await client.query('SELECT * FROM vehicles WHERE company_id = $1', [userResult.rows[0].company_id]);
+        const paymentCredsResult = await client.query('SELECT * FROM payment_credentials WHERE user_id = $1', [userId]);
 
         res.json({
             user: userResult.rows[0],
-            purchases: purchasesResult.rows,
+            purchases: purchasesResult.rows.map((row) => ({...row, purchase_date: row.purchase_date.toISOString().substring(0, 10)})),
             vehicles: vehiclesResult.rows,
+            paymentCreds: paymentCredsResult.rows,
         });
-        } catch (err) {
-        console.error(err);
-        res.status(500).send('Database error');
-        }
-    });
-    
-    // Route to update user contact info (update SQL database)
-    app.put('/api/user/contact/:id', async (req, res) => {
-        const userId = parseInt(req.params.id);
-        const { email, phone_num } = req.body;
+    } catch (err) {
+    console.error(err);
+    res.status(500).send('Database error');
+    }
+});
+
+// Route to update user contact info (update SQL database)
+app.put('/api/user/contact/:id', async (req, res) => {
+    const userId = parseInt(req.params.id);
+    const { email, phone_num } = req.body;
 
     try {
         // Update user contact info in the database
@@ -87,18 +89,18 @@ app.put('/api/user/payment/:id', async (req, res) => {
     }
 });
 
-// Route to get user vehicles (fetch from SQL database)
+// Route to get company vehicles (fetch from SQL database)
 app.get('/api/user/vehicles/:id', async (req, res) => {
-    const userId = parseInt(req.params.id);
+    const companyId = parseInt(req.params.id);
 
     try {
         // Query the database for user's vehicles
-        const result = await client.query('SELECT * FROM vehicles WHERE user_id = $1', [userId]);
+        const result = await client.query('SELECT * FROM vehicles WHERE company_id = $1', [companyId]);
 
         if (result.rows.length > 0) {
         res.json(result.rows);
         } else {
-        res.status(404).send('No vehicles found for this user');
+        res.status(404).send('No vehicles found for this company');
         }
     } catch (err) {
         console.error('Error fetching vehicles:', err);
