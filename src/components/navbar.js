@@ -4,7 +4,11 @@ import LoginContext from "../context/login-context";
 
 // displays the navbar
 export default function Navbar() {
-	const [isLoggedIn] = useContext(LoginContext);
+	const { isLoggedIn, setIsLoggedIn, user } = useContext(LoginContext);
+
+	const handleLogout = () => {
+		setIsLoggedIn(false);
+	};
 
 	if (isLoggedIn === true) {
 		return (

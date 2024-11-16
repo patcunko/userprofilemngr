@@ -1,8 +1,11 @@
 import './../App.css';
 
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
+
 import { getOwnedVehicles, getPaymentCreds, getPurchases } from './objects/dummy';
 
-import React, {useContext} from "react";
+import React, {useContext, useState, useEffect} from "react";
 import {useNavigate} from "react-router";
 import LoginContext from "../context/login-context";
 
@@ -23,25 +26,25 @@ const ListVehicle = (props) => {
 
 const ListPurchase = (props) => {
 	return (
-		<div className="lg:grid grid-cols-4 drop-shadow-md rounded-lg bg-white border p-5 hover:bg-gray-200" key={props.purchase.purchase_no}>
+		<div className="lg:grid grid-cols-4 drop-shadow-md rounded-lg bg-white border p-5 hover:bg-gray-200" key={props.purchase.id}>
 			<div>
 				<div className='flex'>
 					<img src={date_icon} className="h-6 self-center" alt="Time and Date Icon" />
-					<span className="text-xl self-center font-semibold whitespace-nowrap dark:text-black text-wrap">{props.purchase.purchase_date.toLocaleString()}</span>
+					<span className="text-xl self-center font-semibold whitespace-nowrap dark:text-black text-wrap">{props.purchase.purchase_date}</span>
 				</div>
 			</div>
 			<div className="flex col-span-2 justify-self-center">
 				<div className='flex'>
 					<img src={item_icon} className="h-6 self-center" alt="Item Icon" />
-					<span className="text-xl self-center font-semibold whitespace-nowrap dark:text-black">{props.purchase.purchase_item}</span>
+					<span className="text-xl self-center font-semibold whitespace-nowrap dark:text-black">{props.purchase.item_name}</span>
 					<img src={quantity_icon} className="h-6 self-center" alt="Quantity Icon" />
-					<span className="text-xl self-center font-semibold whitespace-nowrap dark:text-black">{props.purchase.item_quantity}</span>
+					<span className="text-xl self-center font-semibold whitespace-nowrap dark:text-black">{props.purchase.quantity}</span>
 				</div>
 			</div>
 			<div className='justify-self-end self-center'>
 				<div className='flex'>
 					<img src={points_icon} className="h-6 self-center" alt="Rewards Points Icon" />
-					<span className="text-xl font-semibold whitespace-nowrap dark:text-black">{props.purchase.point_reward}</span>
+					<span className="text-xl font-semibold whitespace-nowrap dark:text-black">{props.purchase.amount}</span>
 				</div>
 			</div>
 		</div>
@@ -61,7 +64,7 @@ function CompanyDetails(user) {
 							Company Name: 
 						</dt>
 						<dd className="mt-1 text-sm text-gray-900 sm:mt-0">
-							{user.company.name}
+							{user.company_name}
 						</dd>
 					</div>
 					<div className="bg-white px-4 py-5 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-6">
@@ -78,7 +81,7 @@ function CompanyDetails(user) {
 								Your Loyalty Points at 
 							</p>
 							<p className='text-blue-500 font-bold'>
-								{user.company.name}: 
+								{user.company_name}: 
 							</p>
 						</dt>
 						<dd className="mt-1 text-sm text-green-500 font-bold sm:mt-0">
@@ -97,9 +100,11 @@ const PaymentForm = (props) => {
 		navigate("/");
 	}
 
-	const offset = props.pay_cred.expiry_date.getTimezoneOffset();
-	const newDate = new Date(props.pay_cred.expiry_date.getTime() - (offset*60*1000));
-	const formattedDate = newDate.toISOString().split('T')[0];
+	const offset = props.pay_cred.expiration_date.substring(0, 10);
+	// This needs fixing
+	const newDate = new Date(props.pay_cred.expiration_date - offset*60*1000);
+	// const formattedDate = newDate.toISOString().split('T')[0];
+	const formattedDate = "FIXME";
 
 	return (
 		<div className="bg-white rounded-lg shadow-lg pl-0 p-6">
@@ -110,7 +115,7 @@ const PaymentForm = (props) => {
 				<div className="grid grid-cols-2 gap-6">
 					<div className="col-span-2 sm:col-span-1">
 						<label htmlFor="card-number" className="block text-sm font-medium text-gray-700 mb-2">Card Number</label>
-						<input type="text" name="card-number" defaultValue={props.pay_cred.account_number} id="card-number" placeholder="0000 0000 0000 0000" className="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500"/>
+						<input type="text" name="card-number" defaultValue={props.pay_cred.card_number} id="card-number" placeholder="0000 0000 0000 0000" className="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500"/>
 					</div>
 					<div className="col-span-2 sm:col-span-1">
 						<label htmlFor="expiration-date" className="block text-sm font-medium text-gray-700 mb-2">Expiration Date</label>
@@ -122,7 +127,7 @@ const PaymentForm = (props) => {
 					</div>
 					<div className="col-span-2 sm:col-span-1">
 						<label htmlFor="card-holder" className="block text-sm font-medium text-gray-700 mb-2">Card Holder</label>
-						<input type="text" name="card-holder" id="card-holder" defaultValue={props.pay_cred.owner.first_name + " " + props.pay_cred.owner.last_name} placeholder="Full Name" className="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500"/>
+						<input type="text" name="card-holder" id="card-holder" defaultValue={props.user.first_name + " " + props.user.last_name} placeholder="Full Name" className="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500"/>
 					</div>
 				</div>
 				<div className="mt-8">
@@ -133,12 +138,11 @@ const PaymentForm = (props) => {
 	);
 }
 
-function ContactInfoForm() {
-	// eslint-disable-next-line
-	const [isLoggedIn, setIsLoggedIn, user, setUser] = useContext(LoginContext);
-	const navigate = useNavigate();
+function ContactInfoForm(props) {
+	const {user} = props;
+	// const navigate = useNavigate();
 	async function onSubmit(e) {
-		navigate("/");
+		// navigate("/");
 	}
 
 	return (
@@ -154,7 +158,7 @@ function ContactInfoForm() {
 					</div>
 					<div className="col-span-2 sm:col-span-1">
 						<label htmlFor="phone-number" className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
-						<input type="text" name="phone-number" id="phone-number" defaultValue={user.phone_num} placeholder="4445556666" className="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500"/>
+						<input type="text" name="phone-number" id="phone-number" defaultValue={user.phone_number} placeholder="4445556666" className="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500"/>
 					</div>
 				</div>
 				<div className="mt-8">
@@ -167,10 +171,28 @@ function ContactInfoForm() {
 
 export default function ProfilePage() {
 	// eslint-disable-next-line
-	const [isLoggedIn, setIsLoggedIn, user, setUser] = useContext(LoginContext);
+	const [isLoggedIn, setIsLoggedIn, _, setUser] = useContext(LoginContext);
+	const { id } = useParams();
+	const [userData, setUserData] = useState(null);
+
+	useEffect(() => {
+		axios.get(`http://localhost:5000/api/users/${id}`)
+		.then(response => {
+			setUserData(response.data);
+		})
+		.catch(error => {
+			console.error('Error fetching user data:', error);
+		});
+	}, [id]);
+
+	if (!userData || !userData.user) {
+		return <div>Loading...</div>;
+	}
+
+	const { user, purchases, vehicles, paymentCreds } = userData;
 
 	function vehicleList() {
-		return getOwnedVehicles(user).map((vehicle) => {
+		return vehicles.map((vehicle) => {
 			return (
 				<ListVehicle
 					key = {vehicle.id}
@@ -181,7 +203,7 @@ export default function ProfilePage() {
 	}
 
 	function purchaseList() {
-		return getPurchases(user).map((purchase) => {
+		return purchases.map((purchase) => {
 			return (
 				<ListPurchase
 					key = {purchase.id}
@@ -192,13 +214,15 @@ export default function ProfilePage() {
 	}
 
 	function paymentForm() {
-		const pay_cred = getPaymentCreds(user);
-		return (
-			<PaymentForm
-				key = {pay_cred.owner.id}
-				pay_cred = {pay_cred}
-			/>
-		);
+		return paymentCreds.map((paymentCred) => {
+			return (
+				<PaymentForm
+					key = {paymentCred.id}
+					pay_cred = {paymentCred}
+					user={user}
+				/>
+			);
+		})
 	}
 
 	return (
@@ -225,7 +249,7 @@ export default function ProfilePage() {
 			</div>
 			<div className='grid grid-cols-2 gap-6 w-5/6'>
 				{paymentForm()}
-				{ContactInfoForm()}
+				{ContactInfoForm({user})}
 			</div>
 			<div className="rounded-2xl shadow-2xl bg-white w-5/6 h-50 space-y-4 pt-6">
 				<div className='border-l-8 border-yellow-400 bg-gray-100 font-bold px-6 mb-6 w-fit'>
