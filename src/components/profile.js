@@ -1,8 +1,11 @@
 import './../App.css';
 
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
+
 import { getOwnedVehicles, getPaymentCreds, getPurchases } from './objects/dummy';
 
-import React, {useContext} from "react";
+import React, {useContext, useState, useEffect} from "react";
 import {useNavigate} from "react-router";
 import LoginContext from "../context/login-context";
 
@@ -167,7 +170,25 @@ function ContactInfoForm() {
 
 export default function ProfilePage() {
 	// eslint-disable-next-line
-	const [isLoggedIn, setIsLoggedIn, user, setUser] = useContext(LoginContext);
+	const [isLoggedIn, setIsLoggedIn, setUser] = useContext(LoginContext);
+	const { id } = useParams();
+	const [userData, setUserData] = useState(null);
+
+	useEffect(() => {
+		axios.get(`http://localhost:5000/api/users/${id}`)
+		.then(response => {
+			setUserData(response.data);
+		})
+		.catch(error => {
+			console.error('Error fetching user data:', error);
+		});
+}, [id]);
+
+if (!userData || !userData.user) {
+	return <div>Loading...</div>;
+}
+
+const { user, purchases, vehicles } = userData;
 
 	function vehicleList() {
 		return getOwnedVehicles(user).map((vehicle) => {
