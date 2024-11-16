@@ -1,4 +1,4 @@
-const pool = require('../../db/dbConfig');
+import { query as _query } from '../../db/dbConfig';
 
 const getUserProfile = async (req, res) => {
     const userId = req.params.userId;
@@ -24,7 +24,7 @@ const getUserProfile = async (req, res) => {
         `;
         const values = [userId];
 
-        const { rows } = await pool.query(query, values);
+        const { rows } = await _query(query, values);
 
         if (rows.length === 0) {
             return res.status(404).json({ error: 'User not found' });
@@ -38,4 +38,4 @@ const getUserProfile = async (req, res) => {
     }
 };
 
-module.exports = { getUserProfile };
+export default { getUserProfile };

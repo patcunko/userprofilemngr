@@ -3,8 +3,6 @@ import './../App.css';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
-import { getOwnedVehicles, getPaymentCreds, getPurchases } from './objects/dummy';
-
 import React, {useContext, useState, useEffect} from "react";
 import {useNavigate} from "react-router";
 import LoginContext from "../context/login-context";
@@ -100,11 +98,9 @@ const PaymentForm = (props) => {
 		navigate("/");
 	}
 
-	const offset = props.pay_cred.expiration_date.substring(0, 10);
-	// This needs fixing
-	const newDate = new Date(props.pay_cred.expiration_date - offset*60*1000);
-	// const formattedDate = newDate.toISOString().split('T')[0];
-	const formattedDate = "FIXME";
+	const expDate = new Date(props.pay_cred.expiration_date);
+	const formattedDate = expDate.toISOString().split('T')[0];
+
 
 	return (
 		<div className="bg-white rounded-lg shadow-lg pl-0 p-6">

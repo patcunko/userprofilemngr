@@ -5,9 +5,9 @@ const { Client } = require('pg');  // PostgreSQL client
 
 // PostgreSQL client setup
 const client = new Client({
-    user: 'postgres',
+    user: 'root',
     host: 'localhost',
-    database: 'User',
+    database: 'usermanagement',
     password: 'master',
     port: 5432, // default PostgreSQL port
 });
@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 
 app.get('/api/users', async (req, res) => {
     try {
-        const result = await client.query('SELECT * FROM users');
+        const result = await client.query('SELECT users.* , name as company_name FROM users INNER JOIN companies ON users.company_id = companies.id');
         res.json(result.rows);
         } catch (err) {
             console.error(err);
@@ -50,6 +50,7 @@ app.get('/api/users/:id', async (req, res) => {
     res.status(500).send('Database error');
     }
 });
+
 
 // Route to update user contact info (update SQL database)
 app.put('/api/user/contact/:id', async (req, res) => {

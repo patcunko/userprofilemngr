@@ -1,8 +1,6 @@
 import './../App.css';
 import axios from 'axios';
 
-import { users } from './objects/dummy';
-
 import person_icon from './../resources/user.png';
 import company_icon from './../resources/company.png';
 import role_icon from './../resources/role.png';
@@ -23,7 +21,7 @@ const ListUser = (props) => {
 		console.log(`Became user ${user.first_name}.`);
 		navigate(`/profile/${user.id}`);
 	}
-
+	
 	return (
 		<div className="lg:grid grid-cols-10 drop-shadow-md rounded-lg bg-white border w-5/6 h-30 p-5 hover:bg-gray-200"
 			onClick={() => { becomeUser() }} key={user.id}>
