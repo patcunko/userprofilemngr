@@ -96,6 +96,38 @@ app.put('/api/user/contact/:id', async (req, res) => {
     }
 });
 
+// Create a new user
+// Haven't tested yet
+app.post("/api/user", async (req, res) => {
+  const { firstName, lastName, email, phone, companyId, employeeRole, loyaltyPoints } = req.body;
+  try {
+    const result = await client.query(
+      `INSERT INTO "UserProfile" 
+      ("FirstName", "LastName", "EmailAddress", "PhoneNumber", "CompanyID", "EmployeeRole", "LoyaltyPoints") 
+      VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
+      [firstName, lastName, email, phone, companyId, employeeRole, loyaltyPoints]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error("Error creating user:", err);
+    res.status(500).send("Database query error");
+  }
+});
+
+// Delete a user
+// Haven't tested yet
+app.delete("/api/user/:userId", async (req, res) => {
+  const userId = parseInt(req.params.userId);
+  try {
+    const result = await client.query('DELETE FROM "UserProfile" WHERE "UserID" = $1 RETURNING *', [userId]);
+    if (result.rows.length === 0) return res.status(404).send("User not found");
+    res.json({ message: "User deleted successfully", user: result.rows[0] });
+  } catch (err) {
+    console.error("Error deleting user:", err);
+    res.status(500).send("Database query error");
+  }
+});
+
 // Route to update payment details (update SQL database)
 app.put("/api/user/:userId/payment", async (req, res) => {
   const userId = parseInt(req.params.userId);
@@ -124,6 +156,52 @@ app.put("/api/user/:userId/payment", async (req, res) => {
   }
 });
 
+// Get payment credentials for a user
+// Haven't tested yet
+app.get("/api/user/:userId/payment", async (req, res) => {
+  const userId = parseInt(req.params.userId);
+  try {
+    const result = await client.query('SELECT * FROM "PaymentCredential" WHERE "Owner" = $1', [userId]);
+    if (result.rows.length === 0) return res.status(404).send("No payment credentials found");
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Error fetching payment credentials:", err);
+    res.status(500).send("Database query error");
+  }
+});
+
+// Add payment credentials
+// Haven't tested yet
+app.post("/api/user/:userId/payment", async (req, res) => {
+  const userId = parseInt(req.params.userId);
+  const { accountNumber, cvv, expiryDate, accountType, address } = req.body;
+  try {
+    const result = await client.query(
+      `INSERT INTO "PaymentCredential" 
+      ("AccountNumber", "CVV", "ExpiryDate", "AccountType", "Address", "Owner") 
+      VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
+      [accountNumber, cvv, expiryDate, accountType, address, userId]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error("Error adding payment credentials:", err);
+    res.status(500).send("Database query error");
+  }
+});
+
+// Delete payment credentials
+// Haven't tested yet
+app.delete("/api/user/:userId/payment", async (req, res) => {
+  const userId = parseInt(req.params.userId);
+  try {
+    const result = await client.query('DELETE FROM "PaymentCredential" WHERE "Owner" = $1 RETURNING *', [userId]);
+    if (result.rows.length === 0) return res.status(404).send("Payment credentials not found");
+    res.json({ message: "Payment credentials deleted successfully", credentials: result.rows[0] });
+  } catch (err) {
+    console.error("Error deleting payment credentials:", err);
+    res.status(500).send("Database query error");
+  }
+});
 // Route to get company vehicles (fetch from SQL database)
 app.get('/api/user/vehicles/:id', async (req, res) => {
     const companyId = parseInt(req.params.id);
