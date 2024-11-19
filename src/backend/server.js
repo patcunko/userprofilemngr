@@ -56,7 +56,7 @@ app.put("/api/user/:userId", async (req, res) => {
   const userId = parseInt(req.params.userId);
   const { firstName, lastName, email, phone, employeeRole } = req.body;
   try {
-    const result = await pool.query(
+    const result = await client.query(
       `UPDATE "UserProfile"
       SET "FirstName" = $1, "LastName" = $2, "EmailAddress" = $3, "PhoneNumber" = $4, "EmployeeRole" = $5
       WHERE "UserID" = $6 RETURNING *`,
